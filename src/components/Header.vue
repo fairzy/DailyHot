@@ -58,6 +58,16 @@
           </n-popover>
           <n-popover>
             <template #trigger>
+              <n-button secondary strong round @click="router.push('/history')">
+                <template #icon>
+                  <n-icon :component="History" />
+                </template>
+              </n-button>
+            </template>
+            历史归档
+          </n-popover>
+          <n-popover>
+            <template #trigger>
               <n-button secondary strong round @click="router.push('/setting')">
                 <template #icon>
                   <n-icon :component="SettingTwo" />
@@ -94,6 +104,7 @@ import {
   Refresh,
   SettingTwo,
   HamburgerButton,
+  History,
 } from "@icon-park/vue-next";
 import { getCurrentTime } from "@/utils/getTime.js";
 import { mainStore } from "@/store";
@@ -174,6 +185,15 @@ const menuOptions = [
     },
   },
   {
+    label: "历史归档",
+    key: "history",
+    icon: () => {
+      return h(NIcon, null, {
+        default: () => h(History),
+      });
+    },
+  },
+  {
     label: "全局设置",
     key: "setting",
     icon: () => {
@@ -190,6 +210,8 @@ const menuOptionsSelect = (val) => {
     router.go(0);
   } else if (val === "changeTheme") {
     store.setSiteTheme(store.siteTheme === "light" ? "dark" : "light");
+  } else if (val === "history") {
+    router.push("/history");
   } else if (val === "setting") {
     router.push("/setting");
   }

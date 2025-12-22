@@ -14,3 +14,26 @@ export const getHotLists = (type, isNew, params) => {
     params,
   });
 };
+
+/**
+ * 获取历史数据
+ * @param {string} date 日期 YYYY-MM-DD
+ * @returns
+ */
+export const getHistory = (date) => {
+  return axios({
+    method: "GET",
+    url: `/history/${date}`,
+  });
+};
+
+/**
+ * 获取历史日期列表
+ * @returns
+ */
+export const getHistoryList = () => {
+  return axios({
+    method: "GET",
+    url: "/history",
+  });
+};

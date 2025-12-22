@@ -149,6 +149,11 @@ const props = defineProps({
     type: Object,
     default: {},
   },
+  // 虚拟数据（历史模式）
+  virtualData: {
+    type: Object,
+    default: null,
+  },
 });
 
 // 更新时间
@@ -164,6 +169,17 @@ const hotListData = ref(null);
 const scrollbarRef = ref(null);
 const listLoading = ref(false);
 const loadingError = ref(false);
+
+watch(
+  () => props.virtualData,
+  (val) => {
+    if (val) {
+      hotListData.value = val;
+      listLoading.value = false;
+    }
+  },
+  { immediate: true }
+);
 
 // 获取热榜数据
 const getHotListsData = async (name, isNew = false) => {

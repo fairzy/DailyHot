@@ -32,6 +32,7 @@ export default defineConfig(({ mode }) => {
         registerType: "autoUpdate",
         workbox: {
           cleanupOutdatedCaches: true,
+          navigateFallbackDenylist: [/^\/history\/.*/], // Exclude history pages from SW navigation
           runtimeCaching: [
             {
               urlPattern: /(.*?)\.(woff2|woff|ttf)/,
@@ -75,6 +76,13 @@ export default defineConfig(({ mode }) => {
     },
     server: {
       port: 6699,
+      proxy: {
+        // 代理历史记录的 HTML 请求到后端
+        "^/history/.*\\.html$": {
+          target: loadEnv(mode, process.cwd())["VITE_GLOBAL_API"] || "http://localhost:6688",
+          changeOrigin: true,
+        },
+      },
     },
     build: {
       minify: "terser",

@@ -17,6 +17,15 @@ const routes = [
     },
     component: () => import("@/views/List.vue"),
   },
+  // 历史回顾
+  {
+    path: "/history",
+    name: "history-list",
+    meta: {
+      title: "历史归档",
+    },
+    component: () => import("@/views/HistoryList.vue"),
+  },
   // 设置页
   {
     path: "/setting",
