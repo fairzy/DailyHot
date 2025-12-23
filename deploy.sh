@@ -53,6 +53,14 @@ rsync -avz \
     ../DailyHotApi/ \
     ${SERVER_USER}@${SERVER_IP}:${REMOTE_BACKEND_PATH}
 
+# 2.1 强制上传 run-daily-task.js (确保它被更新)
+if [ -f "../DailyHotApi/run-daily-task.js" ]; then
+    echo -e "${GREEN}===> [Supplemental] 正在单独上传 run-daily-task.js...${NC}"
+    rsync -avz ../DailyHotApi/run-daily-task.js ${SERVER_USER}@${SERVER_IP}:${REMOTE_BACKEND_PATH}/
+else
+    echo "警告: 本地未找到 ../DailyHotApi/run-daily-task.js，跳过单独上传"
+fi
+
 # 3. 重启后端服务
 echo -e "${GREEN}===> [4/5] 正在服务器上安装依赖并重启服务...${NC}"
 ssh ${SERVER_USER}@${SERVER_IP} "cd ${REMOTE_BACKEND_PATH} && npm install --production && pm2 reload ${PM2_APP_NAME} || pm2 start index.js --name ${PM2_APP_NAME}"

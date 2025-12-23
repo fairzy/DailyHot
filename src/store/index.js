@@ -96,7 +96,7 @@ export const mainStore = defineStore("mainData", {
           label: "原神",
           name: "genshin",
           order: 14,
-          show: true,
+          show: false,
         },
         {
           label: "LOL",
