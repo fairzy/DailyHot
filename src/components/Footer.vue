@@ -16,11 +16,22 @@
       v-html="icp"
       @click="jumpLink('https://beian.miit.gov.cn/')"
     />
+    <n-text
+      class="icp"
+      :depth="3"
+      style="margin-top: 5px"
+      @click="router.push('/history')"
+    >
+      历史归档
+    </n-text>
   </footer>
 </template>
 
 <script setup>
 import packageJson from "@/../package.json";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 const icp = ref(import.meta.env.VITE_ICP ? import.meta.env.VITE_ICP : null);
 

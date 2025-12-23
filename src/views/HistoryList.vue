@@ -1,42 +1,43 @@
 <template>
   <div class="history-list">
     <div class="header">
-      <div class="title">历史回顾</div>
+      <div class="title">近7日历史归档</div>
       <n-button secondary strong @click="router.push('/')" class="back-btn">
         返回首页
       </n-button>
     </div>
 
-    <div v-if="loading" class="loading-state">
-      <n-spin size="large" />
-      <div class="text">正在加载历史档案...</div>
-    </div>
-
-    <div v-else-if="error" class="error-state">
-      <n-result status="500" title="获取失败" description="无法获取历史列表，请稍后重试">
-        <template #footer>
-          <n-button @click="loadList">重试</n-button>
-        </template>
-      </n-result>
-    </div>
-
-    <div v-else-if="dates.length === 0" class="empty-state">
-      <n-empty description="暂无历史数据" />
-    </div>
-
-    <div v-else class="date-grid">
-      <a
-        v-for="date in dates"
-        :key="date"
-        class="date-card"
-        :href="`/history/${date}.html`"
-        target="_blank"
+    <div class="sitemap-container">
+      <div v-if="loading" class="loading">
+        <n-spin size="large" />
+      </div>
+      <n-grid
+        v-else-if="dates.length > 0"
+        cols="1 560:2 800:3 1100:4 1500:5"
+        :x-gap="24"
+        :y-gap="24"
       >
-        <div class="date-content">
-          <n-icon size="24" :component="Calendar" />
-          <span class="date-text">{{ date }}</span>
-        </div>
-      </a>
+        <n-grid-item
+          class="history-card"
+          v-for="(date, index) in dates"
+          :key="date"
+          :style="{ animationDelay: index / 10 + 0.1 + 's' }"
+        >
+          <a :href="getStaticUrl(date)" target="_blank" class="card-link">
+            <n-card hoverable class="card-content">
+                <div class="card-body">
+                    <n-icon size="40" color="var(--n-primary-color)">
+                        <Calendar />
+                    </n-icon>
+                    <span class="date-text">{{ date }}</span>
+                </div>
+            </n-card>
+          </a>
+        </n-grid-item>
+      </n-grid>
+      <div v-else class="empty-state">
+        <n-empty description="暂无历史数据" />
+      </div>
     </div>
   </div>
 </template>
@@ -45,39 +46,49 @@
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { getHistoryList } from "@/api";
+import { NSpin, NEmpty, NButton, NGrid, NGridItem, NCard, NIcon } from "naive-ui";
 import { Calendar } from "@icon-park/vue-next";
 
 const router = useRouter();
 const dates = ref([]);
 const loading = ref(true);
-const error = ref(false);
 
-const loadList = async () => {
-  loading.value = true;
-  error.value = false;
-  try {
-    const res = await getHistoryList();
-    if (res.code === 200) {
-      dates.value = res.data;
-    } else {
-      error.value = true;
-    }
-  } catch (err) {
-    console.error(err);
-    error.value = true;
-  } finally {
-    loading.value = false;
+const getStaticUrl = (dateStr) => {
+  // Get API base URL and strip 'api/' suffix to get static root
+  let baseUrl = import.meta.env.VITE_GLOBAL_API;
+  if (baseUrl.endsWith('api/')) {
+    baseUrl = baseUrl.slice(0, -4);
+  } else if (baseUrl.endsWith('api')) {
+    baseUrl = baseUrl.slice(0, -3);
   }
+  // Ensure trailing slash
+  if (!baseUrl.endsWith('/')) {
+    baseUrl += '/';
+  }
+  return `${baseUrl}history/${dateStr}.html`;
 };
 
-onMounted(() => {
-  loadList();
+onMounted(async () => {
+    try {
+        const res = await getHistoryList();
+        if (res.code === 200) {
+            // Only keep the latest 7 days
+            dates.value = res.data.slice(0, 7);
+        }
+    } catch (error) {
+        console.error("Failed to fetch history list", error);
+    } finally {
+        loading.value = false;
+    }
 });
 </script>
 
 <style lang="scss" scoped>
 .history-list {
-  padding: 20px 0;
+  padding: 20px 5vw;
+  max-width: 1800px;
+  margin: 0 auto;
+  min-height: calc(100vh - 240px);
 
   .header {
     display: flex;
@@ -91,60 +102,59 @@ onMounted(() => {
     }
   }
 
-  .loading-state,
-  .error-state,
-  .empty-state {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 400px;
-    .text {
-      margin-top: 16px;
-      color: var(--n-text-color-3);
+  .sitemap-container {
+    
+    .loading, .empty-state {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 200px;
+    }
+
+    .history-card {
+        opacity: 0;
+        transform: translateY(20px);
+        animation: cardShow 0.3s forwards ease-in-out;
+        
+        .card-link {
+            text-decoration: none;
+            
+            .card-content {
+                cursor: pointer;
+                transition: transform 0.3s;
+                
+                &:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .card-body {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 20px;
+                    
+                    .date-text {
+                        margin-top: 10px;
+                        font-size: 18px;
+                        font-weight: bold;
+                        color: var(--n-text-color);
+                    }
+                }
+            }
+        }
     }
   }
+}
 
-  .date-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 20px;
-
-    .date-card {
-      cursor: pointer;
-      text-align: center;
-      transition: all 0.3s;
-      text-decoration: none;
-      color: inherit;
-      background-color: var(--n-card-color);
-      border-radius: 3px;
-      display: block; // Make 'a' tag block
-      
-      :deep(.n-card) {
-          cursor: pointer;
-          // Inherit styles from n-card usage previously or wrap n-card inside
-      }
-      
-      .date-content {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 10px;
-        padding: 20px; 
-        border: 1px solid var(--n-border-color);
-        border-radius: 8px;
-        transition: all 0.3s;
-        
-        &:hover {
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-
-        .date-text {
-          font-size: 18px;
-          font-weight: 500;
-        }
-      }
-    }
+@keyframes cardShow {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 </style>
