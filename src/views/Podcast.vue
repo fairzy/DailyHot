@@ -255,33 +255,33 @@ const mockEpisodes = [
   { 
     vol: '36', 
     date: '12月23日', 
-    title: '[12月23日]微博热搜、百度热搜、网易热搜、腾讯热搜、今日头条热搜', 
-    duration: 1365,
+    title: '比亚迪、字节、宁德时代Q4同步加薪，国家文物局工作组进驻南博核查“仇英卷”流失', 
+    duration: '22:45',
     url: 'https://www.xiaoyuzhoufm.com/episode/694ab74b0f2ae6a867c85278'
   },
   { 
     vol: '35', 
     date: '12月22日', 
     title: '山西大同灵丘4.2级地震', 
-    duration: '08:30', 
+    duration: '26:00', 
     url: 'https://www.xiaoyuzhoufm.com/episode/69494ae10f2ae6a86790586d' 
   },
   { 
     vol: '34', 
     date: '12月21日', 
     title: '男子直播影响游客煽动人肉保安被拘，数九寒天到 冬至时节有这些习俗', 
-    duration: '14:20', 
+    duration: '32:38', 
     url: 'https://www.xiaoyuzhoufm.com/episode/6948063b9f70e5d6b382f5bf' 
   },
   { 
     vol: '33', 
     date: '12月20日', 
     title: '各大平台热搜AI播报:2026 央视春晚吉祥物发布，北京同仁堂就南极磷虾油事件致歉', 
-    duration: '11:15', 
+    duration: '35:59', 
     url: 'https://www.xiaoyuzhoufm.com/episode/6946a7829f70e5d6b35d9a61' 
   },
-  { vol: '32', date: '12月19日', title: '董明珠71岁正是拼的年纪，南京导航软件集体失灵', duration: '10:50', url: 'https://m.ximalaya.com/sound/942082306' },
-  { vol: '31', date: '12月18日', title: '各大平台热搜AI播报:2262年两个春节只放1次假，泰国总理回应轰炸柬埔寨赌场', duration: '13:40', url: 'https://m.ximalaya.com/sound/941812912' },
+  { vol: '32', date: '12月19日', title: '董明珠71岁正是拼的年纪，南京导航软件集体失灵', duration: '35:!0', url: 'https://m.ximalaya.com/sound/942082306' },
+  { vol: '31', date: '12月18日', title: '各大平台热搜AI播报:2262年两个春节只放1次假，泰国总理回应轰炸柬埔寨赌场', duration: '27:55', url: 'https://m.ximalaya.com/sound/941812912' },
 ]
 </script>
 
