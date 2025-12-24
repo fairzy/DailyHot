@@ -84,9 +84,10 @@
                     <img src="/logo/podcast.svg" style="width: 1em; height: 1em" />
                   </n-icon>
                 </template>
+                收听播客
               </n-button>
             </template>
-            Podcast
+            收听播客
           </n-popover>
         </n-space>
       </div>
@@ -220,7 +221,7 @@ const menuOptions = [
     },
   },
   {
-    label: "Podcast",
+    label: "收听播客",
     key: "podcast",
     icon: () => {
       return h(NIcon, null, {
