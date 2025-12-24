@@ -44,6 +44,15 @@ const routes = [
     },
     component: () => import("@/views/Test.vue"),
   },
+  // 播客订阅
+  {
+    path: "/podcast",
+    name: "podcast",
+    meta: {
+      title: "播客订阅",
+    },
+    component: () => import("@/views/Podcast.vue"),
+  },
   // 403
   {
     path: "/403",

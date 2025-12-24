@@ -76,6 +76,18 @@
             </template>
             全局设置
           </n-popover>
+          <n-popover>
+            <template #trigger>
+              <n-button secondary strong round @click="openPodcast">
+                <template #icon>
+                  <n-icon>
+                    <img src="/logo/podcast.svg" style="width: 1em; height: 1em" />
+                  </n-icon>
+                </template>
+              </n-button>
+            </template>
+            Podcast
+          </n-popover>
         </n-space>
       </div>
       <div class="mobile">
@@ -116,6 +128,10 @@ const router = useRouter();
 const store = mainStore();
 const timeInterval = ref(null);
 const showRefresh = ref(false);
+
+const openPodcast = () => {
+  router.push("/podcast");
+};
 
 // 移动端时间模块
 const timeRender = () => {
@@ -203,6 +219,19 @@ const menuOptions = [
       });
     },
   },
+  {
+    label: "Podcast",
+    key: "podcast",
+    icon: () => {
+      return h(NIcon, null, {
+        default: () =>
+          h("img", {
+            src: "/logo/podcast.svg",
+            style: "width: 1em; height: 1em",
+          }),
+      });
+    },
+  },
 ];
 
 // 移动端下拉菜单点击事件
@@ -215,6 +244,8 @@ const menuOptionsSelect = (val) => {
     router.push("/history");
   } else if (val === "setting") {
     router.push("/setting");
+  } else if (val === "podcast") {
+    openPodcast();
   }
 };
 
@@ -247,7 +278,7 @@ onBeforeUnmount(() => {
   align-items: center;
   justify-content: center;
   padding: 24px 5vw;
-  z-index: 2;
+  z-index: 2000;
   top: 0;
   background-color: transparent;
   transition: all 0.3s;

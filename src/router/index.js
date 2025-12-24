@@ -7,11 +7,18 @@ const router = createRouter({
 });
 
 // 路由守卫
-router.beforeEach(() => {
+router.beforeEach((to, from, next) => {
+  console.log("Router beforeEach", to.path);
+  if (to.meta.title) {
+    document.title = `${to.meta.title} - 今日热榜`;
+  }
   $loadingBar.start();
+  next();
+  console.log("Router next called");
 });
 
 router.afterEach(() => {
+  console.log("Router afterEach");
   $loadingBar.finish();
 });
 
