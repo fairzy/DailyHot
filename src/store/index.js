@@ -189,6 +189,11 @@ export const mainStore = defineStore("mainData", {
           }
         }
         if (updatedNum) $message.success(`成功更新 ${updatedNum} 个榜单数据`);
+        // 清除无效数据
+        const defaultNames = this.defaultNewsArr.map((item) => item.name);
+        this.newsArr = this.newsArr.filter((item) =>
+          defaultNames.includes(item.name)
+        );
       } else {
         console.log("列表无内容，写入默认");
         this.newsArr = this.defaultNewsArr;
