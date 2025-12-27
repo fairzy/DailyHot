@@ -116,7 +116,7 @@
       </div>
       
       <div class="view-more-container">
-        <div class="view-more-btn">查看全部</div>
+        <div class="view-more-btn" @click="openLink('xiaoyuzhou')">查看全部</div>
       </div>
     </div>
 
